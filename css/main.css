@@ -3,7 +3,33 @@
   margin-left: 2px; 
   display: block;
 }
+a.fa, a.fa-solid{
+  width: 40px;
+  height: 20px;
+  font-size: 25px;
+  cursor: pointer;
+}
+a:not([href]):not([tabindex]) {
+  color: red;
+}
+.fa-solid.fa-pen.UpdateButton{
+  color: orange;
+}
+i.fa-solid.fa-minus{
+  background: #fff;
+  border-radius: 100px;
+  color: #de3f4e;
+  
+}
 
+#deleteEmployeeModal p{
+  font-size: 2rem;
+  font-weight: 600;
+  color: black;
+}
+#deleteEmployeeModal .modal-title{
+  color: #de3f4e;
+}
 #SapXepGiam{
 	display: none;
 }
@@ -15,7 +41,6 @@
     background: linear-gradient(to right, #ACB6E5, #74ebd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 }
-
 
 .myCardHeader, .myCardFooter{
 	background-color: transparent;       

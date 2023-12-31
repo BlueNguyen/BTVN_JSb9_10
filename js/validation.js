@@ -53,30 +53,30 @@ function validateEmail(event) {
   }
 }
 
-function validatePass(event) {
-  let passInput = document.getElementById("password");
-  let passError = document.getElementById("tbMatKhau");
-  let passValue = passInput.value.trim();
+// function validatePass(event) {
+//   let passInput = document.getElementById("password");
+//   let passError = document.getElementById("tbMatKhau");
+//   let passValue = passInput.value.trim();
 
-  if (passValue.length === 0) {
-    passError.textContent = "Mật khẩu không được để trống";
-    event.preventDefault();
-  } else if (passValue.length < 6 || passValue.length > 10) {
-    passError.textContent = "Mật khẩu phải dài từ 6 đến 10 kí tự";
-    event.preventDefault();
-  } else if (
-    !/\d/.test(passValue) &&
-    !/[A-Z]/.test(passValue) &&
-    !/[!@#$%^&*]/.test(passValue)
-  ) {
-    passError.textContent =
-      "Mật khẩu phải chứa ít nhất 1 ký tự số, 1 ký tự in hoa, 1 ký tự đặc biệt";
-    console.log(passError.textContent);
-    // event.preventDefault();
-  } else {
-    passError.textContent = "";
-  }
-}
+//   if (passValue.length === 0) {
+//     passError.textContent = "Mật khẩu không được để trống";
+//     event.preventDefault();
+//   } else if (passValue.length < 6 || passValue.length > 10) {
+//     passError.textContent = "Mật khẩu phải dài từ 6 đến 10 kí tự";
+//     event.preventDefault();
+//   } else if (
+//     !/\d/.test(passValue) ||
+//     !/[A-Z]/.test(passValue) ||
+//     !/[!@#$%^&*]/.test(passValue)
+//   ) {
+//     passError.textContent =
+//       "Mật khẩu phải chứa ít nhất 1 ký tự số, 1 ký tự in hoa, 1 ký tự đặc biệt";
+//     console.log(passError.textContent);
+//     // event.preventDefault();
+//   } else {
+//     passError.textContent = "";
+//   }
+// }
 
 function validateDateWork(event) {
   let dateInput = document.getElementById("datepicker");
@@ -91,21 +91,21 @@ function validateDateWork(event) {
   }
 }
 
-function validateBase(event) {
-  let baseInput = document.getElementById("luongCB");
-  let baseError = document.getElementById("tbLuongCB");
-  let baseValue = baseInput.value.trim();
+// function validateBase(event) {
+//   let baseInput = document.getElementById("luongCB");
+//   let baseError = document.getElementById("tbLuongCB");
+//   let baseValue = baseInput.value.trim();
 
-  if (baseValue.length === 0) {
-    baseError.textContent = "Lương cơ bản không được để trống";
-    event.preventDefault();
-  } else if (baseValue < 1000000 || baseValue > 20000000) {
-    baseError.textContent = "Lương cơ bản phải từ 1 000 000 đến 20 000 000";
-    event.preventDefault();
-  } else {
-    baseError.textContent = "";
-  }
-}
+//   if (baseValue.length === 0) {
+//     baseError.textContent = "Lương cơ bản không được để trống";
+//     event.preventDefault();
+//   } else if (baseValue < 1000000 || baseValue > 20000000) {
+//     baseError.textContent = "Lương cơ bản phải từ 1 000 000 đến 20 000 000";
+//     event.preventDefault();
+//   } else {
+//     baseError.textContent = "";
+//   }
+// }
 
 function validatePos(event) {
   let posInput = document.getElementById("chucvu");
@@ -120,18 +120,18 @@ function validatePos(event) {
   }
 }
 
-function validateHoursWork(event) {
-  let hoursInput = document.getElementById("gioLam");
-  let hoursError = document.getElementById("tbGiolam");
-  let hoursValue = hoursInput.value.trim();
+// function validateHoursWork(event) {
+//   let hoursInput = document.getElementById("gioLam");
+//   let hoursError = document.getElementById("tbGiolam");
+//   let hoursValue = hoursInput.value.trim();
 
-  if (hoursValue.length === 0) {
-    hoursError.textContent = "Số giờ làm trong tháng không được bỏ trống";
-    event.preventDefault();
-  } else if (hoursValue < 80 || hoursValue > 200) {
-    hoursError.textContent = "Số giờ làm phải từ 80 đến 200";
-    event.preventDefault();
-  } else {
-    hoursError.textContent = "";
-  }
-}
+//   if (hoursValue.length === 0) {
+//     hoursError.textContent = "Số giờ làm trong tháng không được bỏ trống";
+//     event.preventDefault();
+//   } else if (hoursValue < 80 || hoursValue > 200) {
+//     hoursError.textContent = "Số giờ làm phải từ 80 đến 200";
+//     event.preventDefault();
+//   } else {
+//     hoursError.textContent = "";
+//   }
+// }

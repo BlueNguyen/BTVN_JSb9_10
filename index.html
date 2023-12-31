@@ -8,7 +8,10 @@
     <!-- Font Awesome -->
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
     />
 
     <!-- Bootstrap 4 -->
@@ -138,7 +141,17 @@
                     data-toggle="modal"
                     data-target="#myModal"
                   >
+                    <i class="fa fa-plus-circle"></i>
                     Thêm nhân viên
+                  </button>
+                  <button
+                    class="btn btn-danger"
+                    id="btnXoa"
+                    data-toggle="modal"
+                    data-target="#deleteEmployeeModal"
+                  >
+                    <i class="fa-solid fa-minus"></i>
+                    Xoá nhân viên
                   </button>
                 </div>
               </div>
@@ -163,9 +176,13 @@
                   </div>
                 </div>
               </div>
-              <table class="table table-bordered table-hover myTable">
+              <table
+                class="table table-bordered table-hover myTable"
+                id="employeeTable"
+              >
                 <thead class="text-primary">
                   <tr>
+                    <th></th>
                     <th class="nowrap">
                       <span class="mr-1">Tài khoản</span>
                       <i class="fa fa-arrow-up" id="SapXepTang"></i>
@@ -194,6 +211,130 @@
               </nav>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Modal HTML -->
+    <div id="editEmployeeModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form>
+            <div class="modal-header">
+              <h4 class="modal-title">Edit Employee</h4>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-hidden="true"
+              >
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label>Address</label>
+                <textarea class="form-control" required></textarea>
+              </div>
+              <div class="form-group">
+                <label>Phone</label>
+                <input type="text" class="form-control" required />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+                value="Cancel"
+              />
+              <input type="submit" class="btn btn-info" value="Save" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Delete Modal HTML -->
+    <div id="deleteEmployeeModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form>
+            <div class="modal-header">
+              <h4 class="modal-title">Delete Employee</h4>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-hidden="true"
+              >
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure want to delete selected Records?</p>
+              <p class="text-warning">
+                <small>This action cannot be undone.</small>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button
+                class="btn btn-default"
+                data-dismiss="modal"
+                value="Cancel"
+                onclick="cancelDele()"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-danger"
+                value="Delete"
+                onclick="deleteSelected()"
+              >
+                Delete
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal trash delete button -->
+    <div id="deleRow" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form >
+            <div class="modal-body">
+              <p>Are you sure want to delete this record?</p>
+            </div>
+            <div class="modal-footer">
+              <button
+                class="btn btn-default"
+                data-dismiss="modal"
+                value="Cancel"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-danger"
+                value="Delete"
+                id="confirmDelete"
+              >
+                Delete
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -295,7 +436,7 @@
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      ><i class="fa fa-calendar"></i
+                      ><i class="fa-solid fa-calendar-days"></i
                     ></span>
                   </div>
                   <input
@@ -314,7 +455,10 @@
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      ><i class="fa fa-money" aria-hidden="true"></i
+                      ><i
+                        class="fa-regular fa-money-bill-1"
+                        aria-hidden="true"
+                      ></i
                     ></span>
                   </div>
                   <input
@@ -348,7 +492,7 @@
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      ><i class="fa fa-clock-o" aria-hidden="true"></i
+                      ><i class="fa-regular fa-clock" aria-hidden="true"></i
                     ></span>
                   </div>
                   <input
@@ -366,7 +510,12 @@
 
           <!-- Modal footer -->
           <div class="modal-footer" id="modal-footer">
-            <button id="btnThemNV" type="submit" class="btn btn-success" onclick="addEmployee()">
+            <button
+              id="btnThemNV"
+              type="submit"
+              class="btn btn-success"
+              onclick="addEmployee()"
+            >
               Thêm người
             </button>
             <button id="btnCapNhat" type="button" class="btn btn-success">
@@ -412,7 +561,12 @@
       });
     </script>
 
-<script src="./js/validation.js"></script>
+    <!-- <script src="./js/employee.js"></script>
+    <script src="./js/listEmployee.js"></script> -->
+    <script src="./js/validation.js"></script>
+    <script src="./js/addEmployee.js"></script>
+    <script src="./js/deleteEm.js"></script>
+    <script src="./js/updateEm.js"></script>
     <script src="./js/main.js"></script>
   </body>
 </html>
