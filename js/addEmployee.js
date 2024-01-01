@@ -122,12 +122,12 @@ function addEmployee() {
 
     let tdDele = document.createElement("td");
     let checkDele = document.createElement("a");
-    checkDele.setAttribute("class", "fa fa-trash mr-2 DeleButton");
+    checkDele.setAttribute("class", "fa fa-trash mr-2 deleButton");
     checkDele.setAttribute("value", employee.account);
     tdDele.appendChild(checkDele);
 
     let checkUp = document.createElement("a");
-    checkUp.setAttribute("class", "fa-solid fa-pen UpdateButton");
+    checkUp.setAttribute("class", "fa-solid fa-pen updateButton");
     checkUp.setAttribute("value", employee.account);
     tdDele.appendChild(checkUp);
 

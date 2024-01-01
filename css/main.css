@@ -12,7 +12,7 @@ a.fa, a.fa-solid{
 a:not([href]):not([tabindex]) {
   color: red;
 }
-.fa-solid.fa-pen.UpdateButton{
+.fa-solid.fa-pen.updateButton{
   color: orange;
 }
 i.fa-solid.fa-minus{

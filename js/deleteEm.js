@@ -31,7 +31,7 @@ function cancelDele() {
   $('input[type="checkbox"]').prop("checked", false);
 
   // Đóng modal
-  $("#confirmationModal").modal("hide");
+  $("#deleteEmployeeModal").modal("hide");
 }
 
 // // Hiển thị modal popup xác nhận xoá Dữ liệu
@@ -40,12 +40,3 @@ function cancelDele() {
 //   modal.style.display = "block";
 // }
 
-// Nút Trash delete
-// function deleRow() {
-//   var rowToDelete = $(this).closest("tr");
-//   // Lắng nghe sự kiện click trên nút xác nhận xoá
-//   $("#confirmDelete").on("click", function () {
-//     // Đóng modal xác nhận
-//     $("#confirmModal").modal("hide");
-//   });
-// }
