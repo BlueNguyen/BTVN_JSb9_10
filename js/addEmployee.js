@@ -123,6 +123,8 @@ function addEmployee() {
     let tdDele = document.createElement("td");
     let checkDele = document.createElement("a");
     checkDele.setAttribute("class", "fa fa-trash mr-2 deleButton");
+    // checkDele.setAttribute("data-target", "#confirmPopup");
+    checkDele.setAttribute("data-toggle","modal");
     checkDele.setAttribute("value", employee.account);
     tdDele.appendChild(checkDele);
 
