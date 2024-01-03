@@ -3,7 +3,7 @@
   margin-left: 2px; 
   display: block;
 }
-a.fa, a.fa-solid{
+a i.fa{
   width: 40px;
   height: 20px;
   font-size: 25px;
@@ -12,8 +12,11 @@ a.fa, a.fa-solid{
 a:not([href]):not([tabindex]) {
   color: red;
 }
-.fa-solid.fa-pen.updateButton{
+i.fa-pen.updateButton{
   color: orange;
+}
+i.fa-pen.updateButton:hover{
+  color: brown;
 }
 i.fa-solid.fa-minus{
   background: #fff;
