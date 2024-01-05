@@ -178,39 +178,7 @@ function updateEmployee() {
 function findEmployeesByLevel() {
   // Hàm xử lý tìm kiếm
   var selectedType = document.getElementById("searchName").value;
-  var selectedRating = document.getElementById("employeeRating").value; // Lấy giá trị xếp loại
-  var customRating = document.getElementById("customRating").value.trim(); // Lấy giá trị xếp loại từ input
-
-  var resultContainer = document.getElementById("result");
-  resultContainer.innerHTML = "";
-
-  var foundEmployees = false;
-
-  for (var i = 0; i < employees.length; i++) {
-    // Kiểm tra loại và xếp loại nhân viên của từng nhân viên
-    if (
-      (employees[i].type === selectedType &&
-        employees[i].rating === selectedRating) ||
-      (customRating &&
-        employees[i].rating.toLowerCase().includes(customRating.toLowerCase()))
-    ) {
-      var employeeInfo = document.createElement("p");
-      employeeInfo.textContent =
-        "Tên: " +
-        employees[i].name +
-        ", Loại: " +
-        employees[i].type +
-        ", Xếp loại: " +
-        employees[i].rating;
-      resultContainer.appendChild(employeeInfo);
-      foundEmployees = true;
-    }
-  }
-
-  if (!foundEmployees) {
-    resultContainer.innerHTML = "Không có nhân viên nào được tìm thấy.";
-  }
-
+  
   // Lưu trạng thái tìm kiếm vào Local Storage
   localStorage.setItem("selectedType", selectedType);
   localStorage.setItem("selectedRating", selectedRating);
