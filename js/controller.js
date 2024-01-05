@@ -11,7 +11,7 @@ function renderDSNV() {
                          <td>${data.pos}</td>
                          <td>${data.tinhLuong()}</td>
                          <td>${data.xepLoai()}</td>
-                         <td> <button class="btn btn-danger mr-2" ><i class="fa fa-trash deleButton"></i></button> 
+                         <td> <button class="btn btn-danger deleButton mr-2" ><i class="fa fa-trash deleButton"></i></button> 
                          <button class="btn btn-warning" data-toggle="modal" data-target="#myModal" onclick="editEmployee('${
                            data.account
                          }')"> <i class="fa fa-pen editButton"></i></button></td>
@@ -43,13 +43,17 @@ function getDataFromForm() {
     pos: pos,
     hoursWork: hoursWork,
     tinhLuong: function () {
-      if (pos == "Giám đốc") {
-        return base * 3;
-      } else if (pos == "Trưởng phòng") {
-        return base * 2;
+      let tongLuong = 0;
+      if (employee.pos == "Giám đốc") {
+        tongLuong = employee.base * 3;
+      } else if (employee.pos == "Trưởng phòng") {
+        tongLuong = employee.base * 2;
       } else {
-        return base;
+        tongLuong = employee.base;
       }
+      tongLuong = tongLuong.toLocaleString("en-US") + " đ";
+      employee.tongLuong = tongLuong;
+      return tongLuong;
     },
     xepLoai: function () {
       if (hoursWork >= 192) {
