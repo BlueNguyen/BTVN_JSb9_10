@@ -142,7 +142,7 @@ function updateEmployee(){
   console.log(employee)
   let index;
   for (let i = 0; i < listEmployee.length; i++) {
-    if (listEmployee[i].account == employee[i].account) {
+    if (listEmployee[i].account == employee.account) {
       index = i;
     }
   }
