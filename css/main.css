@@ -3,26 +3,10 @@
   margin-left: 2px; 
   display: block;
 }
-a i.fa{
-  width: 40px;
-  height: 20px;
-  font-size: 25px;
-  cursor: pointer;
-}
-a:not([href]):not([tabindex]) {
-  color: red;
-}
-i.fa-pen.updateButton{
-  color: orange;
-}
-i.fa-pen.updateButton:hover{
-  color: brown;
-}
 i.fa-solid.fa-minus{
   background: #fff;
   border-radius: 100px;
   color: #de3f4e;
-  
 }
 
 #deleteEmployeeModal p{

@@ -322,8 +322,6 @@
                     id="tknv"
                     class="form-control input-sm"
                     placeholder="Tài khoản"
-                    required
-                    pattern="[0-9]{4,6}"
                   />
                 </div>
 
@@ -471,7 +469,7 @@
             >
               Thêm người
             </button>
-            <button id="btnCapNhat" type="button" class="btn btn-success">
+            <button id="btnCapNhat" type="button" class="btn btn-success" onclick="updateEmployee()">
               Cập nhật
             </button>
             <button
@@ -514,7 +512,7 @@
       });
     </script>
 
-    
+    <script src="./js/controller.js"></script>
     <script src="./js/validation.js"></script>
     <script src="./js/untilities.js"></script>
     <script src="./js/main.js"></script>

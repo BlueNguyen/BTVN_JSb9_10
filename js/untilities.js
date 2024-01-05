@@ -1,56 +1,23 @@
-
 function DOMid(id) {
   let element = document.getElementById(id);
   return element;
 }
 
 let listEmployee = [];
-function renderDSNV() {
-  let contentHTML = "";
-  for (let i = 0; i < listEmployee.length; i++) {
-    let data = listEmployee[i];
-    let trString = `<tr>
-                         <td><input type="checkbox" class="checkbox"></td>
-                         <td>${data.account}</td>
-                         <td>${data.name}</td>
-                         <td>${data.email}</td>
-                         <td>${data.dateWork}</td>
-                         <td>${data.pos}</td>
-                         <td>${data.tinhLuong()}</td>
-                         <td>${data.xepLoai()}</td>
-                         <td> <a ><i class="fa fa-trash deleButton mr-2"></i></a> 
-                         <a onclick="editEmployee('${
-                           data.account
-                         }')"> <i class="fa fa-pen updateButton"></i></a></td>
-                   </tr>`;
-    contentHTML = contentHTML + trString;
-  }
-  document.getElementById("tableDanhSach").innerHTML = contentHTML;
-}
-
-function addEmployee() {
-  DOMid();
-
-  let account = DOMid("tknv").value;
-  let name = DOMid("name").value;
-  let email = DOMid("email").value;
-  let pass = DOMid("password").value;
-  let dateWork = DOMid("datepicker").value;
-  let base = +DOMid("luongCB").value;
-  let pos = DOMid("chucvu").value;
-  let hoursWork = +DOMid("gioLam").value;
-
-  // Tạo object employee
-  let employee = {
-    account: account,
-    name: name,
-    email: email,
-    pass: pass,
-    dateWork: dateWork,
-    base: base,
-    pos: pos,
-    hoursWork: hoursWork,
-    tinhLuong: function () {
+// LẤY DATA TỪ LOCALSTORATE
+var dataJson = localStorage.getItem("DSNV");
+let arrayNV = JSON.parse(dataJson);
+// tạo class object Nhân viên
+function NhanVien(account, name, email, pass, dateWork, base, pos, hoursWork) {
+  (this.account = account),
+    (this.name = name),
+    (this.email = email),
+    (this.pass = pass),
+    (this.dateWork = dateWork),
+    (this.base = base),
+    (this.pos = pos),
+    (this.hoursWork = hoursWork),
+    (this.tinhLuong = function () {
       if (pos == "Giám đốc") {
         return base * 3;
       } else if (pos == "Trưởng phòng") {
@@ -58,8 +25,8 @@ function addEmployee() {
       } else {
         return base;
       }
-    },
-    xepLoai: function () {
+    }),
+    (this.xepLoai = function () {
       if (hoursWork >= 192) {
         return "Xuất sắc";
       } else if (hoursWork >= 176) {
@@ -69,18 +36,37 @@ function addEmployee() {
       } else {
         return "Trung Bình";
       }
-    },
-  };
-  console.log("Object nv", employee);
+    });
+}
+// Duyệt mảng => convert object => object từ class
+for (let i = 0; i < arrayNV.length; i++) {
+  var data = arrayNV[i];
+  var employee = new NhanVien(
+    arrayNV[i].account,
+    arrayNV[i].name,
+    arrayNV[i].email,
+    arrayNV[i].pass,
+    arrayNV[i].dateWork,
+    arrayNV[i].base,
+    arrayNV[i].pos,
+    arrayNV[i].hoursWork
+  );
+  listEmployee.push(employee);
+}
+renderDSNV();
 
+function addEmployee() {
+
+  let employee = getDataFromForm();
   listEmployee.push(employee);
   console.log("Dsnv", listEmployee);
 
+  // giữ data khi user load trang
+  let dataJson = JSON.stringify(listEmployee);
+  localStorage.setItem("DSNV", dataJson);
+
   // render lại layout sau khi thêm thành công
   renderDSNV();
-
-  // Lưu lại danh sách nhân viên vào localStorage
-  saveToLocalStorage();
 }
 
 // *************DELETE***************
@@ -109,17 +95,12 @@ function deleteSelected() {
 
   // Đóng modal sau khi xoá
   $("#deleteEmployeeModal").modal("hide");
-
-  // Lưu lại danh sách nhân viên vào localStorage
-  saveToLocalStorage();
 }
 
 function cancelDele() {
   // Đặt giá trị checked của các checkbox về false
   $('input[type="checkbox"]').prop("checked", false);
 }
-
-
 
 // function deleteTrash(id) {
 //   let index;
@@ -135,18 +116,51 @@ function cancelDele() {
 //   // render lại layout sau khi xoá thành công
 //   renderDSNV();
 // }
-
-// *************Search Employee******************
-
-function findEmployeesByLevel() {
-  let searchLevel = document.getElementById("searchName").value;
-  let result = [];
+// ************Edit And Update Employee******************
+function editEmployee(id){
+  let index;
   for (let i = 0; i < listEmployee.length; i++) {
-    if (listEmployee[i].xepLoai === searchLevel) {
-      result.push(listEmployee[i]);
+    if (listEmployee[i].account == id) {
+      index = i;
     }
   }
-  return result;
+  // từ index lấy ra nhân viên được click
+  let employee= listEmployee[index];
+  // show thông tin lên form
+  document.getElementById("tknv").value = employee.account;
+  document.getElementById("name").value = employee.name;
+  document.getElementById("email").value = employee.email;
+  document.getElementById("password").value = employee.pass;
+  document.getElementById("datepicker").value = employee.dateWork;
+  document.getElementById("luongCB").value = employee.base;
+  document.getElementById("chucvu").value = employee.pos;
+  document.getElementById("gioLam").value = employee.hoursWork;
+}
+
+function updateEmployee(){
+  let employee= getDataFromForm();
+  console.log(employee)
+  let index;
+  for (let i = 0; i < listEmployee.length; i++) {
+    if (listEmployee[i].account == employee[i].account) {
+      index = i;
+    }
+  }
+  // cập nhật data tại vị trí index
+  listEmployee[index]= employee;
+  renderDSNV();
 }
 
 
+// *************Search Employee******************
+
+// function findEmployeesByLevel() {
+//   let searchLevel = document.getElementById("searchName").value;
+//   let result = [];
+//   for (let i = 0; i < listEmployee.length; i++) {
+//     if (listEmployee[i].xepLoai === searchLevel) {
+//       result.push(listEmployee[i]);
+//     }
+//   }
+//   return result;
+// }
