@@ -56,10 +56,19 @@ for (let i = 0; i < arrayNV.length; i++) {
 renderDSNV();
 
 function addEmployee() {
-
   let employee = getDataFromForm();
   listEmployee.push(employee);
   console.log("Dsnv", listEmployee);
+
+  // Kiểm tra Điều kiện
+  validateAccount();
+  validateName();
+  validateEmail();
+  validatePass();
+  validateDateWork();
+  validateBase();
+  validatePos();
+  validateHoursWork();
 
   // giữ data khi user load trang
   let dataJson = JSON.stringify(listEmployee);
@@ -67,6 +76,8 @@ function addEmployee() {
 
   // render lại layout sau khi thêm thành công
   renderDSNV();
+
+  document.getElementById("tknv").value = "";
 }
 
 // *************DELETE***************
@@ -95,6 +106,10 @@ function deleteSelected() {
 
   // Đóng modal sau khi xoá
   $("#deleteEmployeeModal").modal("hide");
+
+  // giữ data khi user load trang
+  let dataJson = JSON.stringify(listEmployee);
+  localStorage.setItem("DSNV", dataJson);
 }
 
 function cancelDele() {
@@ -138,8 +153,8 @@ function editEmployee(id){
 }
 
 function updateEmployee(){
-  let employee= getDataFromForm();
-  console.log(employee)
+  let employee = getDataFromForm();
+  console.log(employee);
   let index;
   for (let i = 0; i < listEmployee.length; i++) {
     if (listEmployee[i].account == employee.account) {
@@ -147,8 +162,15 @@ function updateEmployee(){
     }
   }
   // cập nhật data tại vị trí index
-  listEmployee[index]= employee;
+  listEmployee[index] = employee;
   renderDSNV();
+
+  // Đóng modal sau khi cập nhật
+  $("#myModal").modal("hide");
+
+  // giữ data khi user load trang
+  let dataJson = JSON.stringify(listEmployee);
+  localStorage.setItem("DSNV", dataJson);
 }
 
 
