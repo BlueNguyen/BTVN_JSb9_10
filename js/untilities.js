@@ -101,7 +101,7 @@ function deleteSelected() {
 
   // Tạo một mảng chứa các nhân viên cần xoá
   const employeesToDelete = Array.from(checkboxes).map((checkbox) => {
-    // Đi lên phần tử cha (hàng) của checkbox và lấy employeeId
+    // Đi lên phần tử cha (hàng) của checkbox
     const row = checkbox.parentNode.parentNode; // sử dụng parentNode thay cho closest("tr")
     return row.dataset.employeeId;
   });
@@ -122,13 +122,8 @@ function deleteSelected() {
   localStorage.setItem("DSNV", JSON.stringify(updatedEmployees));
 
   console.log(updatedEmployees.length !== storedEmployees.length
-    ? `Nhân viên có tên ${employee.account} đã được xoá.`
+    ? `Nhân viên có tài khoản ${employee.account} đã được xoá.`
     : `Không tìm thấy nhân viên có tên ${employee.account}.`);
-
-// Sử dụng hàm deleteEmployeeByName với một tên cụ thể
-const employeeNameToDelete = "John Doe"; // Thay thế bằng tên của nhân viên cần xoá
-deleteEmployeeByName(employeeNameToDelete);
-
 
   // Đóng modal sau khi xoá
   $("#deleteEmployeeModal").modal("hide");
