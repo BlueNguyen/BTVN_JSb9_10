@@ -87,9 +87,7 @@ function addEmployee() {
 // *************DELETE***************
 function deleteSelected() {
   // Lấy danh sách tất cả các checkbox
-  const checkboxes = document.querySelectorAll(
-    'input[type="checkbox"]:checked'
-  );
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
   // Kiểm tra xem có nhân viên để xoá không
   if (checkboxes.length === 0) {
@@ -100,35 +98,29 @@ function deleteSelected() {
   }
 
   // Tạo một mảng chứa các nhân viên cần xoá
-  const employeesToDelete = Array.from(checkboxes).map((checkbox) => {
-    // Đi lên phần tử cha (hàng) của checkbox
-    const row = checkbox.parentNode.parentNode; // sử dụng parentNode thay cho closest("tr")
-    return row.dataset.employeeId;
-  });
-  // Xoá các hàng trong DOM
   checkboxes.forEach((checkbox) => {
     const row = checkbox.parentNode.parentNode; // sử dụng parentNode thay cho closest("tr")
+    const employeeAccount = row.dataset.employeeId;
+    // Xoá các hàng trong DOM
     row.remove();
+
+    // Xoá nhân viên từ localStorage
+    const storedEmployees = JSON.parse(localStorage.getItem("DSNV")) || [];
+
+    // Lọc ra những nhân viên có tài khoản khác với tài khoản cần xoá
+    const updatedEmployees = storedEmployees.filter(employee => employee.id !== employeeAccount);
+
+    // Cập nhật dữ liệu trong localStorage
+    localStorage.setItem("DSNV", JSON.stringify(updatedEmployees));
+
+    console.log(updatedEmployees.length !== storedEmployees.length
+      ? `Nhân viên có tài khoản ${employeeAccount} đã được xoá.`
+      : `Không tìm thấy nhân viên có tài khoản ${employeeAccount}.`);
   });
-
-  // Xoá nhân viên từ localStorage
-  
-  const storedEmployees = JSON.parse(localStorage.getItem("DSNV")) || [];
-
-  // Lọc ra những nhân viên có tên khác với tên cần xoá
-  const updatedEmployees = storedEmployees.filter(employee => employee.account !== employeeAccount);
-
-  // Cập nhật dữ liệu trong localStorage
-  localStorage.setItem("DSNV", JSON.stringify(updatedEmployees));
-
-  console.log(updatedEmployees.length !== storedEmployees.length
-    ? `Nhân viên có tài khoản ${employee.account} đã được xoá.`
-    : `Không tìm thấy nhân viên có tên ${employee.account}.`);
 
   // Đóng modal sau khi xoá
   $("#deleteEmployeeModal").modal("hide");
 }
-
 function cancelDele() {
   // Đặt giá trị checked của các checkbox về false
   $('input[type="checkbox"]').prop("checked", false);
