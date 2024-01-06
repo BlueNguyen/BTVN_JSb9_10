@@ -11,8 +11,12 @@ function renderDSNV() {
                          <td>${data.pos}</td>
                          <td>${data.tinhLuong()}</td>
                          <td>${data.xepLoai()}</td>
-                         <td> <button class="btn btn-danger mr-2" onclick= "deleteTrash('${data.account}')"><i class="fa fa-trash"></i></button> 
-                         <button class="btn btn-warning" data-toggle="modal" data-target="#myModal" onclick="editEmployee('${data.account}')"> <i class="fa fa-pen editButton"></i></button></td>
+                         <td> <button class="btn btn-danger mr-2" onclick= "deleteTrash('${
+                           data.account
+                         }')"><i class="fa fa-trash"></i></button> 
+                         <button class="btn btn-warning" data-toggle="modal" data-target="#myModal" onclick="editEmployee('${
+                           data.account
+                         }')"> <i class="fa fa-pen editButton"></i></button></td>
                    </tr>`;
     contentHTML = contentHTML + trString;
   }
@@ -41,16 +45,18 @@ function getDataFromForm() {
     pos: pos,
     hoursWork: hoursWork,
     tinhLuong: function () {
-      let tongLuong = 0;
-      if (employee.pos == "Giám đốc") {
-        tongLuong = employee.base * 3;
-      } else if (employee.pos == "Trưởng phòng") {
-        tongLuong = employee.base * 2;
-      } else {
-        tongLuong = employee.base;
+      switch (this.pos) {
+        case "Giám đốc":
+          tongLuong = (this.base * 3);
+          break;
+        case "Trưởng phòng":
+          tongLuong = (this.base * 2);
+          break;
+        default:
+          tongLuong = this.base;
+          break;
       }
       tongLuong = tongLuong.toLocaleString("en-US") + " đ";
-      employee.tongLuong = tongLuong;
       return tongLuong;
     },
     xepLoai: function () {
@@ -60,8 +66,10 @@ function getDataFromForm() {
         return "Giỏi";
       } else if (hoursWork >= 160) {
         return "Khá";
-      } else {
+      } else if (hoursWork < 160 && hoursWork !== 0) {
         return "Trung Bình";
+      } else {
+        return "";
       }
     },
   };
