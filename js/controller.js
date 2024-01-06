@@ -11,10 +11,8 @@ function renderDSNV() {
                          <td>${data.pos}</td>
                          <td>${data.tinhLuong()}</td>
                          <td>${data.xepLoai()}</td>
-                         <td> <button class="btn btn-danger deleButton mr-2" ><i class="fa fa-trash deleButton"></i></button> 
-                         <button class="btn btn-warning" data-toggle="modal" data-target="#myModal" onclick="editEmployee('${
-                           data.account
-                         }')"> <i class="fa fa-pen editButton"></i></button></td>
+                         <td> <button class="btn btn-danger mr-2" onclick= "deleteTrash('${data.account}')"><i class="fa fa-trash"></i></button> 
+                         <button class="btn btn-warning" data-toggle="modal" data-target="#myModal" onclick="editEmployee('${data.account}')"> <i class="fa fa-pen editButton"></i></button></td>
                    </tr>`;
     contentHTML = contentHTML + trString;
   }

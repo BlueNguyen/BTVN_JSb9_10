@@ -18,13 +18,17 @@ function NhanVien(account, name, email, pass, dateWork, base, pos, hoursWork) {
     (this.pos = pos),
     (this.hoursWork = hoursWork),
     (this.tinhLuong = function () {
-      if (pos == "Giám đốc") {
-        return base * 3;
-      } else if (pos == "Trưởng phòng") {
-        return base * 2;
+      let tongLuong = 0;
+      if (employee.pos == "Giám đốc") {
+        tongLuong = employee.base * 3;
+      } else if (employee.pos == "Trưởng phòng") {
+        tongLuong = employee.base * 2;
       } else {
-        return base;
+        tongLuong = employee.base;
       }
+      tongLuong = tongLuong.toLocaleString("en-US") + " đ";
+      employee.tongLuong = tongLuong;
+      return tongLuong;
     }),
     (this.xepLoai = function () {
       if (hoursWork >= 192) {
@@ -61,14 +65,14 @@ function addEmployee() {
   console.log("Dsnv", listEmployee);
 
   // Kiểm tra Điều kiện
-  validateAccount();
-  validateName();
-  validateEmail();
-  validatePass();
-  validateDateWork();
-  validateBase();
-  validatePos();
-  validateHoursWork();
+  // validateAccount();
+  // validateName();
+  // validateEmail();
+  // validatePass();
+  // validateDateWork();
+  // validateBase();
+  // validatePos();
+  // validateHoursWork();
 
   // giữ data khi user load trang
   let dataJson = JSON.stringify(listEmployee);
@@ -77,39 +81,57 @@ function addEmployee() {
   // render lại layout sau khi thêm thành công
   renderDSNV();
 
-  document.getElementById("tknv").value = "";
+  // document.getElementById("tknv").value = "";
 }
 
 // *************DELETE***************
 function deleteSelected() {
   // Lấy danh sách tất cả các checkbox
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const checkboxes = document.querySelectorAll(
+    'input[type="checkbox"]:checked'
+  );
 
-  // Tạo một mảng chứa các hàng cần xoá
-  const rowsToDelete = [];
+  // Kiểm tra xem có nhân viên để xoá không
+  if (checkboxes.length === 0) {
+    alert("Vui lòng chọn ít nhất một nhân viên để xoá.");
+    // Đóng modal
+    $("#deleteEmployeeModal").modal("hide");
+    return;
+  }
 
-  checkboxes.forEach((checkbox) => {
-    if (checkbox.checked) {
-      // Đi lên phần tử cha (hàng) của checkbox và thêm vào mảng
-      const row = checkbox.closest("tr");
-      if (row) {
-        rowsToDelete.push(row);
-        console.log("rowToDelete", rowsToDelete);
-      }
-    }
+  // Tạo một mảng chứa các nhân viên cần xoá
+  const employeesToDelete = Array.from(checkboxes).map((checkbox) => {
+    // Đi lên phần tử cha (hàng) của checkbox và lấy employeeId
+    const row = checkbox.parentNode.parentNode; // sử dụng parentNode thay cho closest("tr")
+    return row.dataset.employeeId;
   });
-
-  // Xoá các hàng trong mảng
-  rowsToDelete.forEach((row) => {
+  // Xoá các hàng trong DOM
+  checkboxes.forEach((checkbox) => {
+    const row = checkbox.parentNode.parentNode; // sử dụng parentNode thay cho closest("tr")
     row.remove();
   });
 
+  // Xoá nhân viên từ localStorage
+  
+  const storedEmployees = JSON.parse(localStorage.getItem("DSNV")) || [];
+
+  // Lọc ra những nhân viên có tên khác với tên cần xoá
+  const updatedEmployees = storedEmployees.filter(employee => employee.account !== employeeAccount);
+
+  // Cập nhật dữ liệu trong localStorage
+  localStorage.setItem("DSNV", JSON.stringify(updatedEmployees));
+
+  console.log(updatedEmployees.length !== storedEmployees.length
+    ? `Nhân viên có tên ${employee.account} đã được xoá.`
+    : `Không tìm thấy nhân viên có tên ${employee.account}.`);
+
+// Sử dụng hàm deleteEmployeeByName với một tên cụ thể
+const employeeNameToDelete = "John Doe"; // Thay thế bằng tên của nhân viên cần xoá
+deleteEmployeeByName(employeeNameToDelete);
+
+
   // Đóng modal sau khi xoá
   $("#deleteEmployeeModal").modal("hide");
-
-  // giữ data khi user load trang
-  let dataJson = JSON.stringify(listEmployee);
-  localStorage.setItem("DSNV", dataJson);
 }
 
 function cancelDele() {
@@ -117,21 +139,33 @@ function cancelDele() {
   $('input[type="checkbox"]').prop("checked", false);
 }
 
-// function deleteTrash(id) {
-//   let index;
-//   // splice( vị trí xoá, số phần tử xoá)
-//   // từ id tìm ra index
-//   for (let i = 0; i < listEmployee.length; i++) {
-//     if (listEmployee[i].account == id) {
-//       index = i;
-//     }
-//   }
-//   console.log("index", index);
-//   listEmployee.splice(index, 1);
-//   // render lại layout sau khi xoá thành công
-//   renderDSNV();
-// }
+function deleteTrash(id) {
+  let index;
+  // splice( vị trí xoá, số phần tử xoá)
+  // từ id tìm ra index
+  for (let i = 0; i < listEmployee.length; i++) {
+    if (listEmployee[i].account == id) {
+      index = i;
+    }
+  }
+  console.log("index", index);
+
+  // Hiển thị thông báo xác nhận
+  if (
+    confirm("Bạn có chắc chắn muốn xoá nhân viên " + listEmployee[index].account + " có tên "+ listEmployee[index].name + " không?")
+  ) {
+    // Xoá hàng tương ứng
+    listEmployee.splice(index, 1);
+    // giữ data khi user load trang
+    let dataJson = JSON.stringify(listEmployee);
+    localStorage.setItem("DSNV", dataJson);
+  }
+  
+  // render lại layout sau khi xoá thành công
+  renderDSNV();
+}
 // ************Edit And Update Employee******************
+
 function editEmployee(id) {
   let index;
   for (let i = 0; i < listEmployee.length; i++) {
@@ -175,11 +209,11 @@ function updateEmployee() {
 
 // *************Search Employee******************
 
-function findEmployeesByLevel() {
-  // Hàm xử lý tìm kiếm
-  var selectedType = document.getElementById("searchName").value;
+// function findEmployeesByLevel() {
+//   // Hàm xử lý tìm kiếm
+//   var selectedType = document.getElementById("searchName").value;
   
-  // Lưu trạng thái tìm kiếm vào Local Storage
-  localStorage.setItem("selectedType", selectedType);
-  localStorage.setItem("selectedRating", selectedRating);
-}
+//   // Lưu trạng thái tìm kiếm vào Local Storage
+//   localStorage.setItem("selectedType", selectedType);
+//   localStorage.setItem("selectedRating", selectedRating);
+// }
