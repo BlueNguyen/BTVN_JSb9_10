@@ -2,7 +2,7 @@ function renderDSNV() {
   let contentHTML = "";
   for (let i = 0; i < listEmployee.length; i++) {
     var data = listEmployee[i];
-    let trString = `<tr>
+    let trString = `<tr data-employeeId= "${data.account}">
                          <td><input type="checkbox" class="checkbox"></td>
                          <td>${data.account}</td>
                          <td>${data.name}</td>

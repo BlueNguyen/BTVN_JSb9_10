@@ -19,17 +19,18 @@ function NhanVien(account, name, email, pass, dateWork, base, pos, hoursWork) {
     (this.hoursWork = hoursWork),
     this.tinhLuong = function () {
       switch (this.pos) {
-    case "Giám đốc":
-      tongLuong = (this.base * 3).toLocaleString("en-US") + " đ";
-      break;
-    case "Trưởng phòng":
-      tongLuong = (this.base * 2).toLocaleString("en-US") + " đ";
-      break;
-    default:
-      tongLuong = this.base.toLocaleString("en-US") + " đ";;
-      break;
-  }
-return tongLuong;
+        case "Giám đốc":
+          tongLuong = this.base * 3;
+          break;
+        case "Trưởng phòng":
+          tongLuong = this.base * 2;
+          break;
+        default:
+          tongLuong = this.base;
+          break;
+      }
+      tongLuong = tongLuong.toLocaleString("en-US") + " đ";
+      return tongLuong;
 },
     (this.xepLoai = function () {
       if (hoursWork >= 192) {
@@ -68,13 +69,13 @@ function addEmployee() {
   console.log("Dsnv", listEmployee);
 
   // Kiểm tra Điều kiện
-  validateAccount();
+  // validateAccount();
   // validateName();
   // validateEmail();
   // validatePass();
   // validateDateWork();
   // validateBase();
-  validatePos();
+  // validatePos();
   // validateHoursWork();
 
   // giữ data khi user load trang
@@ -90,7 +91,9 @@ function addEmployee() {
 // *************DELETE***************
 function deleteSelected() {
   // Lấy danh sách tất cả các checkbox
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+  const checkboxes = document.querySelectorAll(
+    'input[type="checkbox"]:checked'
+  );
 
   // Kiểm tra xem có nhân viên để xoá không
   if (checkboxes.length === 0) {
@@ -100,31 +103,41 @@ function deleteSelected() {
     return;
   }
 
-  // Tạo một mảng chứa các nhân viên cần xoá
   checkboxes.forEach((checkbox) => {
-    const row = checkbox.parentNode.parentNode; // sử dụng parentNode thay cho closest("tr")
-    const employeeAccount = row.dataset.employeeId;
+    const row = checkbox.closest("tr");
+    const employeeAccount = row.dataset.employeeid;
+
     // Xoá các hàng trong DOM
     row.remove();
 
-    // Xoá nhân viên từ localStorage
-    const storedEmployees = JSON.parse(localStorage.getItem("DSNV")) || [];
+// XOÁ NHÂN VIÊN Ở LOACAL STORAGE
+    // Lấy danh sách nhân viên từ LocalStorage
+    let listEmployee = localStorage.getItem("DSNV")
+      ? JSON.parse(localStorage.getItem("DSNV"))
+      : [];
 
-    // Lọc ra những nhân viên có tài khoản khác với tài khoản cần xoá
-    const updatedEmployees = storedEmployees.filter(employee => employee.id !== employee.account);
+    // Lọc ra nhân viên cần xoá từ danh sách
+    listEmployee = listEmployee.filter(
+      (employee) => employee.account !== employeeAccount
+    );
 
-    // Cập nhật dữ liệu trong localStorage
-    localStorage.setItem("DSNV", JSON.stringify(updatedEmployees));
+    // Lưu danh sách nhân viên đã được cập nhật vào LocalStorage
+    localStorage.setItem("DSNV", JSON.stringify(listEmployee));
 
-    console.log(updatedEmployees.length !== storedEmployees.length
-      ? `Nhân viên có tài khoản ${employee.account} đã được xoá.`
-      : `Không tìm thấy nhân viên có tài khoản ${employee.account}.`);
+    // // Xoá nhân viên từ localStorage
+    // if (localStorage.getItem("DSNV")) {
+    //   localStorage.removeItem(employeeAccount);
+    //   console.log(`Nhân viên có tài khoản ${employeeAccount} đã được xoá.`);
+    // } else {
+    //   console.log(`Không tìm thấy nhân viên có tài khoản ${employeeAccount}.`);
+    // }
   });
 
   // Đóng modal sau khi xoá
   $("#deleteEmployeeModal").modal("hide");
-
 }
+
+
 function cancelDele() {
   // Đặt giá trị checked của các checkbox về false
   $('input[type="checkbox"]').prop("checked", false);
