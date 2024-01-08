@@ -17,7 +17,7 @@ function NhanVien(account, name, email, pass, dateWork, base, pos, hoursWork) {
     (this.base = base),
     (this.pos = pos),
     (this.hoursWork = hoursWork),
-    this.tinhLuong = function () {
+    (this.tinhLuong = function () {
       switch (this.pos) {
         case "Giám đốc":
           tongLuong = this.base * 3;
@@ -31,7 +31,7 @@ function NhanVien(account, name, email, pass, dateWork, base, pos, hoursWork) {
       }
       tongLuong = tongLuong.toLocaleString("en-US") + " đ";
       return tongLuong;
-},
+    }),
     (this.xepLoai = function () {
       if (hoursWork >= 192) {
         return "Xuất sắc";
@@ -39,7 +39,7 @@ function NhanVien(account, name, email, pass, dateWork, base, pos, hoursWork) {
         return "Giỏi";
       } else if (hoursWork >= 160) {
         return "Khá";
-      } else if (hoursWork < 160 && hoursWork!==0) {
+      } else if (hoursWork < 160 && hoursWork !== 0) {
         return "Trung Bình";
       } else {
         return "";
@@ -110,7 +110,7 @@ function deleteSelected() {
     // Xoá các hàng trong DOM
     row.remove();
 
-// XOÁ NHÂN VIÊN Ở LOACAL STORAGE
+    // XOÁ NHÂN VIÊN Ở LOACAL STORAGE
     // Lấy danh sách nhân viên từ LocalStorage
     let listEmployee = localStorage.getItem("DSNV")
       ? JSON.parse(localStorage.getItem("DSNV"))
@@ -137,7 +137,6 @@ function deleteSelected() {
   $("#deleteEmployeeModal").modal("hide");
 }
 
-
 function cancelDele() {
   // Đặt giá trị checked của các checkbox về false
   $('input[type="checkbox"]').prop("checked", false);
@@ -156,7 +155,13 @@ function deleteTrash(id) {
 
   // Hiển thị thông báo xác nhận
   if (
-    confirm("Bạn có chắc chắn muốn xoá nhân viên " + listEmployee[index].account + " có tên "+ listEmployee[index].name + " không?")
+    confirm(
+      "Bạn có chắc chắn muốn xoá nhân viên " +
+        listEmployee[index].account +
+        " có tên " +
+        listEmployee[index].name +
+        " không?"
+    )
   ) {
     // Xoá hàng tương ứng
     listEmployee.splice(index, 1);
@@ -164,7 +169,7 @@ function deleteTrash(id) {
     let dataJson = JSON.stringify(listEmployee);
     localStorage.setItem("DSNV", dataJson);
   }
-  
+
   // render lại layout sau khi xoá thành công
   renderDSNV();
 }
@@ -213,11 +218,50 @@ function updateEmployee() {
 
 // *************Search Employee******************
 
-// function findEmployeesByLevel() {
-//   // Hàm xử lý tìm kiếm
-//   var selectedType = document.getElementById("searchName").value;
+function findEmployeesByType() {
+  // Hàm xử lý tìm kiếm
+  let selectedType = document.getElementById("searchName").value;
+  console.log(selectedType);
+
+  // Kiểm tra giá trị selectedType
+  if (!selectedType) {
+    alert("Vui lòng chọn một loại nhân viên.");
+    return;
+  }
+
+  let listTypeEmployee = [];
+  for (let i = 0; i < listEmployee.length; i++) {
+    if (listEmployee[i].xepLoai() === selectedType) {
+      listTypeEmployee.push(listEmployee[i]);
+    }
+
+    console.log(listTypeEmployee);
+  }
+
+  updateFoundEmployee(listTypeEmployee);
+  renderDSNV();
+}
+
+function updateFoundEmployee(listTypeEmployee) {
+  let tableContent = "";
+
+  if (listTypeEmployee.length > 0) {
+    listTypeEmployee.forEach((employee) => {
+      tableContent += `<tr>
+                         <td>${employee.account}</td>
+                         <td>${employee.name}</td>
+                         <td>${employee.email}</td>
+                         <td>${employee.dateWork}</td>
+                         <td>${employee.pos}</td>
+                         <td>${employee.tinhLuong()}</td>
+                         <td>${employee.xepLoai()}</td>
+                         </tr>`;
+    });
+  } else {
+    tableContent =
+      "<tr><td colspan='2'>Không có nhân viên nào phù hợp.</td></tr>";
+  }
   
-//   // Lưu trạng thái tìm kiếm vào Local Storage
-//   localStorage.setItem("selectedType", selectedType);
-//   localStorage.setItem("selectedRating", selectedRating);
-// }
+  document.getElementById("employeeTable").innerHTML = tableContent;
+  
+}
