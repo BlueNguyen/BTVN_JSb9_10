@@ -261,7 +261,15 @@ function updateFoundEmployee(listTypeEmployee) {
     tableContent =
       "<tr><td colspan='2'>Không có nhân viên nào phù hợp.</td></tr>";
   }
-  
-  document.getElementById("employeeTable").innerHTML = tableContent;
-  
+
+  document.getElementById("employeeTable").innerHTML =
+    `<tr class="text-primary">
+                    <th>Tài khoản</th>
+                    <th>Họ và tên</th>
+                    <th>Email</th>
+                    <th>Ngày làm</th>
+                    <th>Chức vụ</th>
+                    <th>Tổng lương</th>
+                    <th>Xếp loại</th>
+                                         </tr>` + tableContent;
 }
