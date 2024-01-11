@@ -65,18 +65,20 @@ renderDSNV();
 
 function addEmployee() {
   let employee = getDataFromForm();
-  listEmployee.push(employee);
-  console.log("Dsnv", listEmployee);
+  let isValid = true;
 
-  // Kiểm tra Điều kiện
-  // validateAccount();
-  // validateName();
-  // validateEmail();
-  // validatePass();
-  // validateDateWork();
-  // validateBase();
-  // validatePos();
-  // validateHoursWork();
+  isValid= validateAccount() && testSame(employee.account, listEmployee, "tbTKNV");
+  isValid &= validateName();
+  isValid &= validateEmail();
+  isValid &= validatePass();
+  isValid &= validateDateWork();
+  isValid &= validateBase();
+  isValid &= validatePos();
+  isValid &= validateHoursWork();
+
+  if (isValid) {
+    listEmployee.push(employee);
+    console.log("Dsnv", listEmployee);
 
   // giữ data khi user load trang
   let dataJson = JSON.stringify(listEmployee);
@@ -85,8 +87,22 @@ function addEmployee() {
   // render lại layout sau khi thêm thành công
   renderDSNV();
 
-  // document.getElementById("tknv").value = "";
+  document.getElementById("tknv").value = "";
+  }
 }
+
+
+// function checkAndDisableAccountInput() {
+//   var accountInput = document.getElementById("tknv");
+
+//   // Nếu ô tài khoản có giá trị, đặt thuộc tính readonly
+//   if (accountInput.value.trim() !== "") {
+//     accountInput.setAttribute("readonly", true);
+//   } else {
+//     // Nếu ô tài khoản không có giá trị, loại bỏ thuộc tính readonly
+//     accountInput.removeAttribute("readonly");
+//   }
+// }
 
 // *************DELETE***************
 function deleteSelected() {
